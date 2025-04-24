@@ -190,7 +190,7 @@ def ask_doc():
 
 @app.route('/')
 def home():
-    return "Groq AI Resume/Doc Analysis API is running"
+    return "Axion AI API is running"
 
 # Google Authentication
 def get_credentials():
@@ -294,17 +294,22 @@ def schedule_interview():
             send_email(
                 candidate_email=data['candidateEmail'],
                 subject=f"Interview Scheduled with {data['interviewer']}",
-                body=f"""Hi {data['candidateName']},
+                body=f"""Dear {data['candidateName']},
 
-Your interview has been scheduled.
+We are pleased to inform you that your interview for the {data['role']} position has been scheduled.
 
-📅 Date: {data['date']}
-⏰ Time: {data['time']}
-💬 Mode: {data['mode']}
-👤 Interviewer: {data['interviewer']}
-📝 Notes: {data.get('notes', 'N/A')}
+Date: {data['date']}
+Time: {data['time']}
+Mode: {data['mode']}
+Interviewer: {data['interviewer']}
+Notes: {data.get('notes', 'N/A')}
 
-You will receive a Google Calendar invite shortly.
+You will receive a Google Calendar invitation shortly with all the necessary details and a link to join, if applicable. Please ensure your availability for the scheduled time.
+
+If you have any questions or need to reschedule, feel free to reach out.
+
+Best regards,
+{data['interviewer']}
 """
             )
             return jsonify({"success": True, "message": "Interview scheduled and email sent."})
