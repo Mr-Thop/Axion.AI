@@ -1,7 +1,6 @@
 // This file contains functions to interact with the Flask backend API
 
-// Base URL for the API - in production, this would be your actual API URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://axion-ai-dk6p.onrender.com"
+const API_BASE_URL = "https://axion-ai-dk6p.onrender.com"
 
 /**
  * Evaluates a resume against a job description

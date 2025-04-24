@@ -7,7 +7,7 @@ import { AlertCircle, CheckCircle2 } from "lucide-react"
 
 export function ApiStatusIndicator() {
   const [status, setStatus] = useState<"checking" | "online" | "offline">("checking")
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://axion-ai-dk6p.onrender.com"
 
   useEffect(() => {
     const checkApiStatus = async () => {
