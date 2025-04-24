@@ -84,7 +84,7 @@ def evaluate_resume():
     )
 
     print("Resume_Response :  ",resume_response.choices[0].message.content[resume_response.choices[0].message.content.find("{"):])
-    structured_resume = json.loads(resume_response.choices[0].message.content[resume_response.choices[0].message.content.find("{"):])
+    structured_resume = json.loads(resume_response.choices[0].message.content[resume_response.choices[0].message.content.find("{"):resume_response.choices[0].message.content.find("}")+1])
 
     # Step 3: Evaluate the parsed resume
     evaluation_input = {
