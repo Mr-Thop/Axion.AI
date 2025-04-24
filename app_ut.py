@@ -60,7 +60,7 @@ def evaluate_resume():
         model="meta-llama/llama-4-scout-17b-16e-instruct",
         max_completion_tokens=1024
     )
-    job_data = json.loads(job_response.choices[0].message.content[3:-3])["output"]
+    job_data = json.loads(job_response.choices[0].message.content)["output"]
 
     print("Response from Groq:", job_response.choices[0].message.content)
     print("Response Parsed:", job_data)
