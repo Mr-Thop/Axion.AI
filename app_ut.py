@@ -83,7 +83,7 @@ def evaluate_resume():
         max_completion_tokens=1024
     )
 
-    print("Resume_Response :  ",resume_response.choices[0].message.content)
+    print("Resume_Response :  ",resume_response.choices[0].message.content[resume_response.choices[0].message.content.find("{"):])
     structured_resume = json.loads(resume_response.choices[0].message.content[resume_response.choices[0].message.content.find("{"):])
 
     # Step 3: Evaluate the parsed resume
