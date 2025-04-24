@@ -195,13 +195,9 @@ def home():
 # Google Authentication
 def get_credentials():
     creds = None
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-    if not creds or not creds.valid:
-        flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
-        creds = flow.run_local_server(port=8080)
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
+    token_json = os.getenv("GOOGLE_TOKEN_JSON")
+    if token_json:
+        creds = Credentials.from_authorized_user_info(json.loads(token_json), SCOPES)
     return creds
 
 # Send email via Gmail API
