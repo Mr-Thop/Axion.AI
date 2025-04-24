@@ -55,11 +55,9 @@ export default function ResumeAnalyzer() {
         // Format the data for our UI
         const formattedResult = {
           name: resultData.Name || "Candidate",
-          score: Number.parseFloat(
-            resultData.output.match(/(\d+(\.\d+)?)\/10/) 
-              ? resultData.output.match(/(\d+(\.\d+)?)\/10/)[1] * 10 
-              : "70"
-          )
+          score: resultData.output.match(/(\d+(\.\d+)?)\/10/)
+                  ? Number.parseFloat(resultData.output.match(/(\d+(\.\d+)?)\/10/)[1]) * 10
+                  : 70
           ,
           skills: resultData.Skills || ["React", "JavaScript", "Node.js"],
           education: resultData.Education || "Not specified",
