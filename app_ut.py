@@ -292,7 +292,7 @@ def schedule_interview():
                 subject=f"Interview Scheduled with {data['interviewer']}",
                 body=f"""Dear {data['candidateName']},
 
-We are pleased to inform you that your interview for the {data['role']} position has been scheduled.
+We are pleased to inform you that your interview has been scheduled.
 
 Date: {data['date']}
 Time: {data['time']}
