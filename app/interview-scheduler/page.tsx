@@ -58,7 +58,7 @@ export default function InterviewScheduler() {
           return
         }
         formData.append("file", file)
-        res = await fetch("http://localhost:5000/api/schedule-interview", {
+        res = await fetch("https://axion-ai-dk6p.onrender.com/api/schedule-interview", {
           method: "POST",
           body: formData,
         })
@@ -73,7 +73,7 @@ export default function InterviewScheduler() {
           mode: interviewMode,
           notes,
         }
-        res = await fetch("http://localhost:5000/api/schedule-interview", {
+        res = await fetch("https://axion-ai-dk6p.onrender.com/api/schedule-interview", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(jsonBody),
@@ -145,18 +145,16 @@ export default function InterviewScheduler() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="interviewer">Interviewer</Label>
-              <Select onValueChange={setInterviewer} required>
-                <SelectTrigger id="interviewer">
-                  <SelectValue placeholder="Select interviewer" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="john-doe">John Doe</SelectItem>
-                  <SelectItem value="jane-smith">Jane Smith</SelectItem>
-                  <SelectItem value="alex-johnson">Alex Johnson</SelectItem>
-                  <SelectItem value="sarah-williams">Sarah Williams</SelectItem>
-                </SelectContent>
-              </Select>
+                <Label htmlFor="interviewer">Interviewer</Label>
+                <Input
+                  id="interviewer"
+                  type="text"
+                  value={interviewer}
+                  onChange={(e) => setInterviewer(e.target.value)}
+                  placeholder="Enter interviewer's name"
+                  required
+                />
+
             </div>
           </>
         )}

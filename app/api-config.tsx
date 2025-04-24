@@ -13,7 +13,7 @@ const ApiContext = createContext<ApiContextType | undefined>(undefined)
 
 export function ApiProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<ApiStatus>("checking")
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://axion-ai-dk6p.onrender.com"
+  const apiUrl = "https://axion-ai-dk6p.onrender.com"
 
   useEffect(() => {
     const checkApiStatus = async () => {
