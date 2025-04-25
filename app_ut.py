@@ -180,7 +180,6 @@ def summarize_doc():
         
         try:
             json_doc = json.loads(json_str)
-            print("Parsed JSON:", json_doc)
         except json.JSONDecodeError as e:
             print(f"JSON parsing failed: {e}")
             # Add corrective feedback to messages
@@ -219,8 +218,8 @@ def ask_doc():
         model="meta-llama/llama-4-scout-17b-16e-instruct",
         timeout=30
     )
-    print(response.choices[0].message.content)
-    return jsonify({"answer": json.loads(response.choices[0].message.content)["answer"]})
+    reply = safe_json_extract(response.choices[0].message.content)
+    return jsonify({"answer": reply["answer"]})
 
 @app.route('/')
 def home():
