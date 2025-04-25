@@ -36,6 +36,8 @@ SYSTEM_PROMPT_ASK = os.getenv("SYSTEM_PROMPT_ASK")
 SYSTEM = os.getenv("SYSTEM")
 
 SYSTEM_PROMPT_Summary = os.getenv("SYSTEM_PROMPT_Summary")
+valid_json = "Please respond ONLY with valid JSON. Do not include any extra commentary or text outside of the JSON object."
+
 
 
 def extract_text_from_pdf(file):
@@ -67,6 +69,7 @@ def evaluate_resume():
     job_response = client.chat.completions.create(
         messages=[
             {"role": "system", "content": SYSTEM},
+            {"role": "system", "content": valid_json},
             {"role": "user", "content": prompt}
         ],
         model="meta-llama/llama-4-scout-17b-16e-instruct",
@@ -91,6 +94,7 @@ def evaluate_resume():
     resume_response = client.chat.completions.create(
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT_R},
+            {"role": "system", "content": valid_json},
             {"role": "user", "content": json.dumps(resume_input)}
         ],
         model="meta-llama/llama-4-scout-17b-16e-instruct",
@@ -112,6 +116,7 @@ def evaluate_resume():
     }
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "system", "content": valid_json},
         {"role": "user", "content": json.dumps(evaluation_input)}
     ]
     json_plan = {}
@@ -144,6 +149,7 @@ def summarize_doc():
     }
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT_Summary},
+        {"role": "system", "content": valid_json},
         {"role": "user", "content": json.dumps(doc_data)}
     ]
     json_doc = {}
@@ -199,6 +205,7 @@ def ask_doc():
     question = content['question']
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT_ASK},
+        {"role": "system", "content": valid_json},
         {"role": "assistant", "content": json.dumps(doc_summary)},
         {"role": "user", "content": question}
     ]
