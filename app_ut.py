@@ -42,13 +42,25 @@ def extract_text_from_pdf(file):
     reader = PdfReader(file)
     return " ".join([page.extract_text() for page in reader.pages])
 
+def safe_json_extract(raw_text):
+    """
+    Tries to safely extract JSON from a given string and parse it.
+    Returns a dict if successful, else raises JSONDecodeError.
+    """
+    start = raw_text.find('{')
+    end = raw_text.rfind('}')
+    if start == -1 or end == -1:
+        raise ValueError("No JSON object found in response")
+
+    json_str = raw_text[start:end + 1]
+    return json.loads(json_str)
+
+
 @app.route('/evaluate_resume', methods=['POST'])
 def evaluate_resume():
     file = request.files['file']
     prompt = request.form.get('prompt')
     resume_text = extract_text_from_pdf(file)
-
-    print("Resume Text:", resume_text)
 
 
     # Step 1: Extract job role and required skills
@@ -60,10 +72,12 @@ def evaluate_resume():
         model="meta-llama/llama-4-scout-17b-16e-instruct",
         max_completion_tokens=1024
     )
-    job_data = json.loads(job_response.choices[0].message.content)["output"]
 
-    print("Response from Groq:", job_response.choices[0].message.content)
-    print("Response Parsed:", job_data)
+    try:
+        job_data = safe_json_extract(job_response.choices[0].message.content)["output"]
+    except (json.JSONDecodeError, ValueError) as e:
+        return jsonify({"error": f"Failed to parse Job JSON: {str(e)}"}), 500
+
 
 
     # Step 2: Parse the resume based on the job role and skills
@@ -83,8 +97,11 @@ def evaluate_resume():
         max_completion_tokens=1024
     )
 
-    print("Resume_Response :  ",resume_response.choices[0].message.content[resume_response.choices[0].message.content.find("{"):])
-    structured_resume = json.loads(resume_response.choices[0].message.content[resume_response.choices[0].message.content.find("{"):resume_response.choices[0].message.content.find("}")+1])
+    
+    try:
+        structured_resume = safe_json_extract(resume_response.choices[0].message.content)
+    except (json.JSONDecodeError, ValueError) as e:
+        return jsonify({"error": f"Failed to parse resume JSON: {str(e)}"}), 500
 
     # Step 3: Evaluate the parsed resume
     evaluation_input = {
@@ -104,7 +121,11 @@ def evaluate_resume():
             model="meta-llama/llama-4-scout-17b-16e-instruct",
             max_completion_tokens=1024
         )
-        json_plan = json.loads(response.choices[0].message.content[response.choices[0].message.content.find("{"):])
+        try:
+            json_plan = safe_json_extract(response.choices[0].message.content)
+        except (json.JSONDecodeError, ValueError) as e:
+            return jsonify({"error": f"Failed to parse resume JSON: {str(e)}"}), 500
+        
         messages.append({"role": "user", "content": json.dumps(json_plan)})
 
     json_plan["Skills"] = structured_resume["Skills"]
