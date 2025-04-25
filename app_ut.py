@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from groq import Groq
+from groq import AsyncGroq
 import json
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -26,7 +27,8 @@ GOOGLE_TIMEZONE = 'Asia/Kolkata'
 CALENDAR_ID = 'primary'
 
 
-client = Groq(api_key=os.getenv("api_key"))
+# client = Groq(api_key=os.getenv("api_key"))
+client = AsyncGroq(api_key=os.getenv("api_key"))
 
 SYSTEM_PROMPT = os.getenv("SYSTEM_PROMPT")
 SYSTEM_PROMPT_R = os.getenv("SYSTEM_PROMPT_R")
@@ -73,7 +75,8 @@ def evaluate_resume():
             {"role": "user", "content": prompt}
         ],
         model="meta-llama/llama-4-scout-17b-16e-instruct",
-        max_completion_tokens=1024
+        max_completion_tokens=1024,
+        timeout=30
     )
 
     try:
@@ -98,7 +101,8 @@ def evaluate_resume():
             {"role": "user", "content": json.dumps(resume_input)}
         ],
         model="meta-llama/llama-4-scout-17b-16e-instruct",
-        max_completion_tokens=1024
+        max_completion_tokens=1024,
+        timeout=30
     )
 
     
@@ -124,7 +128,8 @@ def evaluate_resume():
         response = client.chat.completions.create(
             messages=messages,
             model="meta-llama/llama-4-scout-17b-16e-instruct",
-            max_completion_tokens=1024
+            max_completion_tokens=1024,
+            timeout=30
         )
         try:
             json_plan = safe_json_extract(response.choices[0].message.content)
@@ -211,7 +216,8 @@ def ask_doc():
     ]
     response = client.chat.completions.create(
         messages=messages,
-        model="meta-llama/llama-4-scout-17b-16e-instruct"
+        model="meta-llama/llama-4-scout-17b-16e-instruct",
+        timeout=30
     )
     print(response.choices[0].message.content)
     return jsonify({"answer": json.loads(response.choices[0].message.content)["answer"]})
