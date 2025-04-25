@@ -27,8 +27,8 @@ GOOGLE_TIMEZONE = 'Asia/Kolkata'
 CALENDAR_ID = 'primary'
 
 
-# client = Groq(api_key=os.getenv("api_key"))
-client = AsyncGroq(api_key=os.getenv("api_key"))
+client = Groq(api_key=os.getenv("api_key"))
+# client = AsyncGroq(api_key=os.getenv("api_key"))
 
 SYSTEM_PROMPT = os.getenv("SYSTEM_PROMPT")
 SYSTEM_PROMPT_R = os.getenv("SYSTEM_PROMPT_R")
