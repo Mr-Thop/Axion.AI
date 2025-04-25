@@ -57,6 +57,7 @@ def safe_json_extract(raw_text):
         raise ValueError("No JSON object found in response")
 
     json_str = raw_text[start:end + 1]
+    print(json_str)
     return json.loads(json_str)
 
 
